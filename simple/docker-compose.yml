@@ -13,7 +13,7 @@ services:
       - ./local-dev.env
     environment:
       - CONFIG_MONGODB_USERNAME=${CONFIG_MONGODB_USERNAME:-default-user}
-      - CONFIG_MONGODB_PASSWORD=12345
+      - CONFIG_MONGODB_PASSWORD
     # volumes:
     #   - "app1-data:/app1"
   app2:
@@ -29,13 +29,27 @@ services:
       - "3002:3002"
     depends_on:
       - app1
+  mongodb:
+    build: ./mongodb
+    # restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD
+    networks:
+      - testdockernet
+    expose:
+      - "27017"
+    ports:
+      - "27017:27017"
+    volumes:
+      - "test-mongodb-data:/data/db"
 networks:
   testdockernet:
     driver: bridge
 volumes:
-  rabbitmq-data:
+  test-rabbitmq-data:
     driver: local
-  mongodb-data:
+  test-mongodb-data:
     driver: local
-  redis-data:
+  test-redis-data:
     driver: local
