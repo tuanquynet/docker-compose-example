@@ -1,0 +1,41 @@
+version: '3.1'
+services:
+  app1:
+    build: ./app1
+    # restart: always
+    networks:
+      - testdockernet
+    ports:
+      - "3001:3001"
+    expose:
+      - "3001"
+    env_file:
+      - ./local-dev.env
+    environment:
+      - CONFIG_MONGODB_USERNAME=${CONFIG_MONGODB_USERNAME:-default-user}
+      - CONFIG_MONGODB_PASSWORD=12345
+    # volumes:
+    #   - "app1-data:/app1"
+  app2:
+    build: ./app2
+    # restart: always
+    environment:
+      - CONFIG_MONGODB_USERNAME
+      - CONFIG_MONGODB_PASSWORD
+    networks:
+      - testdockernet
+    env_file: ./local-dev.env
+    ports:
+      - "3002:3002"
+    depends_on:
+      - app1
+networks:
+  testdockernet:
+    driver: bridge
+volumes:
+  rabbitmq-data:
+    driver: local
+  mongodb-data:
+    driver: local
+  redis-data:
+    driver: local
