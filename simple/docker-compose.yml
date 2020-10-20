@@ -14,9 +14,19 @@ services:
     environment:
       - CONFIG_MONGODB_USERNAME=${CONFIG_MONGODB_USERNAME:-default-user}
       - CONFIG_MONGODB_PASSWORD
+    logging:
+      driver: awslogs
+      options:
+        # we need to use from env variable
+        awslogs-region: ap-southest-1
+        awslogs-group: /docker-compose-example/${ENVIRONMENT:-test}/app1-service
+        awslogs-create-group: "true"
+        max-buffer-size: 10m
+        mode: non-blocking
     # volumes:
     #   - "app1-data:/app1"
   app2:
+    container_name: 'newname-app2'
     build: ./app2
     # restart: always
     environment:
@@ -43,6 +53,13 @@ services:
       - "27017:27017"
     volumes:
       - "test-mongodb-data:/data/db"
+  node-app3:
+    build: ./node-app3
+    # restart: always
+    networks:
+      - testdockernet
+    ports:
+      - "3003:3003"
 networks:
   testdockernet:
     driver: bridge

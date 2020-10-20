@@ -1,0 +1,26 @@
+version: '3.1'
+services:
+  rabbitmq:
+    build: ./rabbitmq
+    hostname: 'my-rabbitmq'
+    # restart: always
+    networks:
+      - testdockernet
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+      - "8883:8883"
+      - "1883:1883"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    volumes:
+      - "./rabbitmq/config/disable_metrics_collector.conf:/etc/rabbitmq/conf.d/management_agent.disable_metrics_collector.conf"
+    # expose:
+    #   - "5672"
+networks:
+  testdockernet:
+    driver: bridge
+volumes:
+  test-rabbitmq-data:
+    driver: local
