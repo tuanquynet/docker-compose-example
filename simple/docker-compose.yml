@@ -9,8 +9,6 @@ services:
       - "3001:3001"
     expose:
       - "3001"
-    env_file:
-      - ./local-dev.env
     environment:
       - CONFIG_MONGODB_USERNAME=${CONFIG_MONGODB_USERNAME:-default-user}
       - CONFIG_MONGODB_PASSWORD
@@ -34,7 +32,6 @@ services:
       - CONFIG_MONGODB_PASSWORD
     networks:
       - testdockernet
-    env_file: ./local-dev.env
     ports:
       - "3002:3002"
     depends_on:
