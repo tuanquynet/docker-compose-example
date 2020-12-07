@@ -12,6 +12,8 @@ services:
     environment:
       - CONFIG_MONGODB_USERNAME=${CONFIG_MONGODB_USERNAME:-default-user}
       - CONFIG_MONGODB_PASSWORD
+    # we can overwrite the default entrypoint
+    # entrypoint: ['echo', 'hello 123']
     logging:
       driver: awslogs
       options:

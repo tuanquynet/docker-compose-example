@@ -1,1 +1,1 @@
-docker-compose --env-file ./local-dev.env up
+env-cmd -f ./local-dev.env docker-compose up
