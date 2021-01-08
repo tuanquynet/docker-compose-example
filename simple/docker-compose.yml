@@ -12,17 +12,6 @@ services:
     environment:
       - CONFIG_MONGODB_USERNAME=${CONFIG_MONGODB_USERNAME:-default-user}
       - CONFIG_MONGODB_PASSWORD
-    # we can overwrite the default entrypoint
-    # entrypoint: ['echo', 'hello 123']
-    logging:
-      driver: awslogs
-      options:
-        # we need to use from env variable
-        awslogs-region: ap-southest-1
-        awslogs-group: /docker-compose-example/${ENVIRONMENT:-test}/app1-service
-        awslogs-create-group: "true"
-        max-buffer-size: 10m
-        mode: non-blocking
     # volumes:
     #   - "app1-data:/app1"
   app2:

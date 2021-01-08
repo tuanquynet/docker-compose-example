@@ -1,0 +1,37 @@
+version: '3.1'
+services:
+  app1:
+    build: ./app1
+    # restart: always
+    networks:
+      - testdockernet
+    ports:
+      - "3001:3001"
+    expose:
+      - "3001"
+    environment:
+      - CONFIG_MONGODB_USERNAME=${CONFIG_MONGODB_USERNAME:-default-user}
+      - CONFIG_MONGODB_PASSWORD
+    # we can overwrite the default entrypoint
+    # entrypoint: ['echo', 'hello 123']
+    logging:
+      driver: awslogs
+      options:
+        # we need to use from env variable
+        awslogs-region: ap-southest-1
+        awslogs-group: /docker-compose-example/${ENVIRONMENT:-test}/app1-service
+        awslogs-create-group: "true"
+        max-buffer-size: 10m
+        mode: non-blocking
+    # volumes:
+    #   - "app1-data:/app1"
+networks:
+  testdockernet:
+    driver: bridge
+volumes:
+  test-rabbitmq-data:
+    driver: local
+  test-mongodb-data:
+    driver: local
+  test-redis-data:
+    driver: local
